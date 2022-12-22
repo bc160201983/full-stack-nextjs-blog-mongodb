@@ -37,7 +37,12 @@ const Home = () => {
           return (
             <div key={post.id} className="post">
               <div className="img">
-                <img src={post.img} />
+                <Image
+                  alt={post.title}
+                  src={post.img}
+                  layout="fill"
+                  objectFit="contain"
+                />
               </div>
               <div className="content">
                 <Link href={`/post/${post.id}`}>

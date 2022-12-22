@@ -7,13 +7,15 @@ const Single = () => {
   return (
     <div className="single">
       <div className="content">
-        <img
+        <Image
+          layout="fill"
+          objectFit="contain"
           src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           alt=""
         />
         {/* <Image src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" /> */}
         <div className="user">
-          <img src="" alt="" />
+          <Image layout="fill" objectFit="contain" src="" alt="" />
 
           <div className="info">
             <span>john</span>
@@ -21,9 +23,19 @@ const Single = () => {
           </div>
           <div className="edit">
             <Link href={`/write?edit=2`}>
-              <img src={"/img/edit.png"} alt="" />
+              <Image
+                layout="fill"
+                objectFit="contain"
+                src={"/img/edit.png"}
+                alt=""
+              />
             </Link>
-            <img src={"/img/delete.png"} alt="" />
+            <Image
+              layout="fill"
+              objectFit="contain"
+              src={"/img/delete.png"}
+              alt=""
+            />
           </div>
         </div>
         <h1>What is Lorem Ipsum?</h1>
