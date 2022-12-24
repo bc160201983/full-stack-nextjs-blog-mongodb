@@ -15,34 +15,34 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="links">
-          <Link href={"/?cat=art"}>
-            <h6 className="link">Art</h6>
+          <Link href={"/?cat=art"} passhref>
+            <a className="link">Art</a>
           </Link>
-          <Link href={"/?cat=art"}>
-            <h6 className="link">science</h6>
+          <Link href={"/?cat=science"}>
+            <a className="link">science</a>
           </Link>
-          <Link href={"/?cat=art"}>
-            <h6 className="link">sports</h6>
+          <Link href={"/?cat=sports"}>
+            <a className="link">sports</a>
           </Link>
-          <Link href={"/?cat=art"}>
-            <h6 className="link">gaming</h6>
+          <Link href={"/?cat=gaming"}>
+            <a className="link">gaming</a>
           </Link>
-          <Link href={"/?cat=art"}>
-            <h6 className="link">technology</h6>
+          <Link href={"/?cat=technology"}>
+            <a className="link">technology</a>
           </Link>
           <span>{currentUser?.username}</span>
           {currentUser ? (
             <span onClick={logout}>Logout</span>
           ) : (
             <Link href="/login">
-              <div className="link">Login</div>
+              <a className="link">Login</a>
             </Link>
           )}
-          <span className="write">
-            <Link href={"/write"}>
+          <Link href={"/write"}>
+            <span className="write">
               <a className="link">Write</a>
-            </Link>
-          </span>
+            </span>
+          </Link>
         </div>
       </div>
     </div>
