@@ -55,7 +55,8 @@ const Write = () => {
       setIsLoading(false);
       console.log(data.message);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.message);
+      setIsLoading(false);
     }
   };
 
