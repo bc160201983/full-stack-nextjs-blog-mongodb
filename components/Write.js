@@ -53,6 +53,7 @@ const Write = () => {
       });
       const data = res.data;
       setIsLoading(false);
+      router.replace("/");
       console.log(data.message);
     } catch (error) {
       console.log(error.response.message);
