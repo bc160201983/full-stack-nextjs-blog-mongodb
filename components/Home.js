@@ -1,35 +1,28 @@
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import axios from "axios";
+import Image from "next/future/image";
+import ReactHtmlParser from "react-html-parser";
 
-const posts = [
-  {
-    id: 1,
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-    desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-    img: "https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-  {
-    id: 2,
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-    desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-    img: "https://images.pexels.com/photos/6489663/pexels-photo-6489663.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-  {
-    id: 3,
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-    desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-    img: "https://images.pexels.com/photos/4230630/pexels-photo-4230630.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-  {
-    id: 4,
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-    desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-    img: "https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-];
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
 const Home = () => {
+  const [posts, setPosts] = useState([]);
+  const router = useRouter();
+  const { cat } = router.query;
+
+  const getPosts = async () => {
+    const res = cat
+      ? await axios.get(`/api/posts/getPosts?cat=${cat}`)
+      : await axios.get(`/api/posts/getPosts`);
+    const data = await res.data;
+    setPosts(data.posts);
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, [cat]);
+
   return (
     <div className="home">
       <div className="posts">
@@ -38,18 +31,25 @@ const Home = () => {
             <div key={post.id} className="post">
               <div className="img">
                 <Image
-                  alt={post.title}
-                  src={post.img}
                   layout="fill"
-                  objectFit="contain"
+                  object-fit="cover"
+                  width={100}
+                  height="400"
+                  alt={post.title}
+                  src={`${
+                    post?.img ||
+                    "https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  }`}
                 />
               </div>
               <div className="content">
-                <Link href={`/post/${post.id}`}>
+                <Link href={`/post/${post._id}`}>
                   <h1>{post.title}</h1>
                 </Link>
-                <p>{post.desc}</p>
-                <button>Read More</button>
+                <p>{ReactHtmlParser(post.desc)}</p>
+                <Link href={`/post/${post._id}`}>
+                  <button>Read More</button>
+                </Link>
               </div>
             </div>
           );

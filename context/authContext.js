@@ -16,6 +16,7 @@ const getLocalStorage = () => {
 
 const AppProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(getLocalStorage() || null);
+  const [alert, setAlert] = useState({ show: false, msg: "", type: "" });
   const login = async (inputs) => {
     const res = await axios.post("/api/auth/login", inputs);
     setCurrentUser(res.data);
@@ -24,6 +25,11 @@ const AppProvider = ({ children }) => {
   const logout = async () => {
     await axios.post("/api/auth/logout");
     setCurrentUser(null);
+    Cookies.remove("user");
+    Cookies.remove("access_token");
+  };
+  const showAlert = (show = false, type = "", msg = "") => {
+    setAlert({ show, type, msg });
   };
 
   // useEffect(() => {
@@ -36,7 +42,9 @@ const AppProvider = ({ children }) => {
   }, [currentUser]);
 
   return (
-    <AppContext.Provider value={{ currentUser, login, logout }}>
+    <AppContext.Provider
+      value={{ currentUser, login, logout, showAlert, alert }}
+    >
       {children}
     </AppContext.Provider>
   );

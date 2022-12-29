@@ -6,6 +6,7 @@ const createPostSchema = new Schema(
     desc: { type: String, required: true },
     img: { type: String, required: true },
     date: { type: Date, default: Date.now, required: true },
+    cat: { type: String },
     uid: { type: String, required: true },
   },
   { timestamps: true }
