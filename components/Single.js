@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 import Image from "next/future/image";
 import Link from "next/link";
 import Menu from "./Menu";
@@ -12,13 +14,16 @@ const Single = () => {
   const { currentUser } = useGlobalContext();
 
   const [post, setPost] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
 
   const getPost = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(`/api/posts/getPost/${id}`);
       const data = await res.data;
+      setIsLoading(false);
       setPost(data.finalData);
       // console.log(data.final);
     } catch (error) {
@@ -42,16 +47,17 @@ const Single = () => {
   return (
     <div className="single">
       <div className="content">
-        <Image
-          width={695}
-          height={300}
-          layout="fill"
-          src={`${
-            post.img ||
-            "https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          }`}
-          alt=""
-        />
+        {isLoading ? (
+          <Skeleton
+            width={695}
+            height={300}
+            variant="rectangular"
+            animation="wave"
+          />
+        ) : (
+          <Image width={695} height={300} layout="fill" src={post.img} alt="" />
+        )}
+
         {/* <Image src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" /> */}
         <div className="user">
           <Image
@@ -89,7 +95,8 @@ const Single = () => {
             </div>
           )}
         </div>
-        <h1>{post.title}</h1>
+        {isLoading ? <Skeleton variant="h1" /> : <h1>{post.title}</h1>}
+
         <div>{ReactHtmlParser(post.desc)}</div>
       </div>
       <div className="menu">
