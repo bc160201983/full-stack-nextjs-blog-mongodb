@@ -12,8 +12,8 @@ const getPosts = async (req, res) => {
 
   try {
     const posts = query.cat
-      ? await Post.find({ cat: query.cat })
-      : await Post.find();
+      ? await Post.find({ cat: query.cat }).sort({ createdAt: -1 })
+      : await Post.find().sort({ createdAt: -1 });
     res.status(200).json({ success: true, posts });
   } catch (error) {
     res.status(500).json({

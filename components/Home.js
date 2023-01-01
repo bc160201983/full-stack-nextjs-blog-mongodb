@@ -31,6 +31,7 @@ const Home = () => {
             <div key={post.id} className="post">
               <div className="img">
                 <Image
+                  unoptimized={true}
                   layout="fill"
                   object-fit="cover"
                   width={100}

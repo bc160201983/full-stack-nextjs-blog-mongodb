@@ -9,6 +9,8 @@ import Router, { useRouter } from "next/router";
 
 const ReactQuill = dynamic(import("react-quill"), { ssr: false });
 
+const category = ["Art", "Science", "Sports", "Gaming", "Technology", "Movies"];
+
 const Write = () => {
   const { currentUser } = useGlobalContext();
   const [isLoading, setIsLoading] = useState(false);
@@ -18,10 +20,12 @@ const Write = () => {
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
   const [img, setImg] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
   const [cat, setCat] = useState("");
   const router = useRouter();
   const { edit } = router.query;
+
+  console.log(img);
 
   const uploadImage = async (image) => {
     setIsUploading(true);
@@ -41,16 +45,21 @@ const Write = () => {
     }
   };
 
+  console.log("image from local", imageUrl);
+  console.log("image from server", img);
+
   const handleSubmit = async () => {
     setIsLoading(true);
+
+    const data = {
+      title: title,
+      desc: value,
+      img: imageUrl,
+      cat: cat,
+      uid: currentUser._id,
+    };
     try {
-      const res = await axios.post("/api/posts/create", {
-        title: title,
-        desc: value,
-        img: imageUrl,
-        cat: cat,
-        uid: currentUser._id,
-      });
+      const res = await axios.post("/api/posts/create", data);
       const data = res.data;
       setIsLoading(false);
       router.replace("/");
@@ -67,7 +76,7 @@ const Write = () => {
       const res = await axios.put(`/api/posts/updatePost/${edit}`, {
         title: title,
         desc: value,
-        img: imageUrl,
+        img: imageUrl === null ? img : imageUrl,
         cat: cat,
         uid: currentUser._id,
       });
@@ -85,7 +94,9 @@ const Write = () => {
       const res = await axios.get(`/api/posts/getPost/${edit}`);
       const data = await res.data;
       setTitle(data.finalData.title);
-      setPost(data.finalData);
+      setValue(data.finalData.desc);
+      setImg(data.finalData.img);
+      // setPost(data.finalData);
     } catch (error) {
       console.log(error.response.data);
     }
@@ -107,7 +118,7 @@ const Write = () => {
           <ReactQuill
             className="editor"
             theme="snow"
-            value={isEditing ? post.desc : value}
+            value={value}
             onChange={setValue}
           />
         </div>
