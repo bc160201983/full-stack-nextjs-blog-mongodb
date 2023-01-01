@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 const Home = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const router = useRouter();
   const { cat } = router.query;
@@ -38,7 +38,7 @@ const Home = () => {
           return (
             <div key={post.id} className="post">
               {isLoading ? (
-                <Skeleton width={100} height={400} variant="rectangular" />
+                <Skeleton width={400} height={400} variant="rectangular" />
               ) : (
                 <div className="img">
                   <Image
@@ -55,7 +55,7 @@ const Home = () => {
 
               <div className="content">
                 {isLoading ? (
-                  <Skeleton variant="h1" />
+                  <Skeleton variant="h1" width={550} height={50} />
                 ) : (
                   <Link href={`/post/${post._id}`}>
                     <h1>{post.title}</h1>
@@ -63,7 +63,7 @@ const Home = () => {
                 )}
 
                 {isLoading ? (
-                  <Skeleton variant="text" width={550} height={150} />
+                  <Skeleton variant="text" width={550} height={350} />
                 ) : (
                   <p>{ReactHtmlParser(post.desc)}</p>
                 )}
