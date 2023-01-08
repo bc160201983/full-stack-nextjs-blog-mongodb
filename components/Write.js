@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 import { useGlobalContext } from "../context/authContext";
 import dynamic from "next/dynamic";
 import LoadingImg from "../public/img/Rolling.svg";
@@ -25,7 +26,14 @@ const Write = () => {
   const router = useRouter();
   const { edit } = router.query;
 
-  console.log(img);
+  useEffect(() => {
+    const User =
+      Cookies.get("user") !== "undefined"
+        ? JSON.parse(Cookies.get("user"))
+        : Cookies.remove();
+
+    if (!User) router.replace("/login");
+  }, []);
 
   const uploadImage = async (image) => {
     setIsUploading(true);
